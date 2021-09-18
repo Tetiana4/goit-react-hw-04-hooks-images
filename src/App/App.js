@@ -5,7 +5,7 @@ import { fetchImages } from '../services/api';
 import { Container } from './App.styled';
 import { Searchbar } from '../Components/Searchbar/Searchbar';
 import ImageGallery from '../Components/ImageGallery/ImageGallery';
-import { ImageGalleryItem } from '../Components/ImageGalleryItem/ImageGalleryItem';
+import ImageGalleryItem from '../Components/ImageGalleryItem/ImageGalleryItem';
 import { Button } from '../Components/Button/Button';
 import { Spinner } from '../Components/Loader/Loader';
 import Modal from '../Components/Modal/Modal';
@@ -36,9 +36,9 @@ export default function App() {
     try {
       setStatus(Status.IDLE);
       fetchImages(imageName, page).then(res => {
-        // if (images.length === 0) {
-        //   return toast.error('Please, write something better');
-        // }
+        if (res.length === 0) {
+          return toast.error('Please, write something better');
+        }
         setImages(prevState => [...prevState, ...res]);
         setStatus(Status.RESOLVED);
         toast('🎉 Hope you are enjoy');
@@ -53,7 +53,7 @@ export default function App() {
         top: document.documentElement.scrollHeight,
         behavior: 'smooth',
       });
-  }, [imageName, page, images]);
+  }, [imageName, page]);
 
   const handleFormSubmit = value => {
     if (imageName === value) {
