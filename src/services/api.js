@@ -1,4 +1,5 @@
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
 axios.defaults.baseURL = 'https://pixabay.com/api';
 
@@ -7,4 +8,9 @@ export const fetchImages = async (imageName, page) => {
   const URL = `?q=${imageName}&page=${page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`;
   const response = await axios.get(URL);
   return response.data.hits;
+};
+
+fetchImages.PropTypes = {
+  imageName: PropTypes.string,
+  page: PropTypes.number,
 };

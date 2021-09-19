@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Searchform,
   Searchbtn,
@@ -8,9 +9,9 @@ import {
 } from './Searchbar.styled';
 
 export const Searchbar = ({ onSearch }) => {
-  const handleSearch = e => {
-    e.preventDefault();
-    onSearch(e.target.elements.imageName.value);
+  const handleSearch = event => {
+    event.preventDefault();
+    onSearch(event.target.elements.imageName.value);
   };
 
   return (
@@ -30,4 +31,7 @@ export const Searchbar = ({ onSearch }) => {
       </Searchform>
     </Searchbarh>
   );
+};
+Searchbar.propTypes = {
+  onSearch: PropTypes.func,
 };
