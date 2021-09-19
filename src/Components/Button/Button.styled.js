@@ -23,8 +23,7 @@ export const Loadbutton = styled.button`
   color: #dacedb;
   cursor: pointer;
 
-  &:hover,
-  &:focus {
+  &:hover {
     background-color: #99779b;
   }
 `;
