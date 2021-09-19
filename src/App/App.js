@@ -10,7 +10,6 @@ import { Button } from '../Components/Button/Button';
 import { Spinner } from '../Components/Loader/Loader';
 import Modal from '../Components/Modal/Modal';
 
-import '../App.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Status = {
@@ -41,7 +40,6 @@ export default function App() {
         }
         setImages(prevState => [...prevState, ...res]);
         setStatus(Status.RESOLVED);
-        toast('🎉 Hope you are enjoy');
       });
     } catch (error) {
       setStatus(Status.REJECTED);
@@ -74,14 +72,6 @@ export default function App() {
     setShowModal(!showModal);
   };
 
-  const selectedImg = data => {
-    setLargeUrl(data);
-  };
-
-  const onLoadMore = e => {
-    setPage(page + 1);
-  };
-
   return (
     <Container>
       <Searchbar onSearch={handleFormSubmit} />
@@ -90,10 +80,10 @@ export default function App() {
         <ImageGalleryItem
           images={images}
           toggleModal={toggleModal}
-          selectedImg={selectedImg}
+          selectedImg={data => setLargeUrl(data)}
         />
       </ImageGallery>
-      {images.length > 11 && <Button onClick={onLoadMore} />}
+      {images.length > 11 && <Button onClick={() => setPage(page + 1)} />}
 
       {showModal && (
         <Modal
