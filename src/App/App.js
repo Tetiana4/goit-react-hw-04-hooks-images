@@ -5,7 +5,7 @@ import { fetchImages } from '../services/api';
 import { Container } from './App.styled';
 import { Searchbar } from '../Components/Searchbar/Searchbar';
 import ImageGallery from '../Components/ImageGallery/ImageGallery';
-import ImageGalleryItem from '../Components/ImageGalleryItem/ImageGalleryItem';
+
 import { Button } from '../Components/Button/Button';
 import { Spinner } from '../Components/Loader/Loader';
 import Modal from '../Components/Modal/Modal';
@@ -31,26 +31,28 @@ export default function App() {
     if (!imageName) {
       return;
     }
+    async function getImages() {
+      try {
+        setStatus(Status.IDLE);
+        const images = await fetchImages(imageName, page);
 
-    try {
-      setStatus(Status.IDLE);
-      fetchImages(imageName, page).then(res => {
-        if (res.length === 0) {
+        if (images.length === 0) {
           return toast.error('Please, write something better');
         }
-        setImages(prevState => [...prevState, ...res]);
+        setImages(prevState => [...prevState, ...images]);
         setStatus(Status.RESOLVED);
-      });
-    } catch (error) {
-      setStatus(Status.REJECTED);
-      toast.error('Error');
+
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: 'smooth',
+        });
+      } catch (error) {
+        setStatus(Status.REJECTED);
+        toast.error('Error');
+      }
     }
 
-    page > 1 &&
-      window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: 'smooth',
-      });
+    getImages();
   }, [imageName, page]);
 
   const handleFormSubmit = value => {
@@ -72,18 +74,27 @@ export default function App() {
     setShowModal(!showModal);
   };
 
+  const handleLoadMore = () => {
+    setPage(prevPage => prevPage + 1);
+  };
+  const showButtonMore = images.length > 11;
+
+  const handleLargeUrl = e => {
+    toggleModal();
+    setLargeUrl(e.target.dataset.src);
+  };
+
   return (
     <Container>
       <Searchbar onSearch={handleFormSubmit} />
       {status === 'pending' && <Spinner />}
-      <ImageGallery>
-        <ImageGalleryItem
-          images={images}
-          toggleModal={toggleModal}
-          selectedImg={data => setLargeUrl(data)}
-        />
-      </ImageGallery>
-      {images.length > 11 && <Button onClick={() => setPage(page + 1)} />}
+      <ImageGallery
+        images={images}
+        toggleModal={toggleModal}
+        selectedImage={setLargeUrl}
+        handleSelectedImg={handleLargeUrl}
+      ></ImageGallery>
+      {showButtonMore && <Button onClick={handleLoadMore} />}
 
       {showModal && (
         <Modal
