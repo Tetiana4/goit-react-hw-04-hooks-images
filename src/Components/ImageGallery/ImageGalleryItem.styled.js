@@ -4,7 +4,7 @@ export const Item = styled.li`
   &:hover,
   &:focus {
     transform: scale(1.1);
-    transition: 500ms linear;
+    transition: 100ms linear;
   }
 `;
 export const Image = styled.img`
@@ -12,5 +12,5 @@ export const Image = styled.img`
   cursor: pointer;
   transition: 9s;
   width: 400px;
-  height: 100%;
+  height: 200px;
 `;

@@ -9,6 +9,7 @@ import ImageGallery from '../Components/ImageGallery/ImageGallery';
 import { Button } from '../Components/Button/Button';
 import { Spinner } from '../Components/Loader/Loader';
 import Modal from '../Components/Modal/Modal';
+import { scrollTo } from '../helpers/scroll';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -33,7 +34,7 @@ export default function App() {
     }
     async function getImages() {
       try {
-        setStatus(Status.IDLE);
+        setStatus(Status.PENDING);
         const images = await fetchImages(imageName, page);
 
         if (images.length === 0) {
@@ -41,11 +42,7 @@ export default function App() {
         }
         setImages(prevState => [...prevState, ...images]);
         setStatus(Status.RESOLVED);
-
-        window.scrollTo({
-          top: document.documentElement.scrollHeight,
-          behavior: 'smooth',
-        });
+        scrollTo();
       } catch (error) {
         setStatus(Status.REJECTED);
         toast.error('Error');
