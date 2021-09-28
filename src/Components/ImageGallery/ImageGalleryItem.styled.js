@@ -11,6 +11,6 @@ export const Image = styled.img`
   display: block;
   cursor: pointer;
   transition: 9s;
-  width: 400px;
+  width: 300px;
   height: 200px;
 `;
